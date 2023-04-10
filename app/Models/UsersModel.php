@@ -8,6 +8,7 @@ class UsersModel extends Model
 {
     protected $table = 'users';
     protected $allowedFields = ['name', 'email'];
+    protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
     function create($data) {
