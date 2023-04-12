@@ -37,6 +37,10 @@ $routes->get('post/(:num)', 'PostController::show/$1');
 $routes->post('post/(:num)', 'PostController::update/$1');
 $routes->delete('post/(:num)', 'PostController::delete/$1');
 
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->get('example', 'ExampleApiController::index');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
