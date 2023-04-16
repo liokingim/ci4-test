@@ -145,7 +145,8 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$driver instead.
      */
-    public string $sessionDriver = FileHandler::class;
+    // public string $sessionDriver = FileHandler::class;
+    public $sessionDriver = App\Libraries\Session\CocorochSessionHandler::class;
 
     /**
      * --------------------------------------------------------------------------

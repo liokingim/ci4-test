@@ -41,6 +41,15 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
     $routes->get('example', 'ExampleApiController::index');
 });
 
+$routes->get('/', 'HomeController::index');
+$routes->group('auth', function ($routes) {
+    $routes->get('facebook', 'AuthController::facebook');
+    $routes->get('facebook/callback', 'AuthController::facebookCallback');
+    $routes->get('google', 'AuthController::google');
+    $routes->get('google/callback', 'AuthController::googleCallback');
+    $routes->get('logout', 'AuthController::logout');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
