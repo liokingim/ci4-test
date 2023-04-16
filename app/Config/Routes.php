@@ -48,6 +48,8 @@ $routes->group('auth', function ($routes) {
     $routes->get('google', 'AuthController::google');
     $routes->get('google/callback', 'AuthController::googleCallback');
     $routes->get('logout', 'AuthController::logout');
+    $routes->get('facebook/sns', 'SNSAuthController::authenticateWithFacebook');
+    $routes->get('google/sns', 'SNSAuthController::authenticateWithGoogle');
 });
 
 /*
