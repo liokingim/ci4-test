@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Libraries\CustomDatabaseHandler;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\FileHandler;
 
@@ -146,7 +147,9 @@ class App extends BaseConfig
      * @deprecated use Config\Session::$driver instead.
      */
     // public string $sessionDriver = FileHandler::class;
-    public $sessionDriver = App\Libraries\Session\CocorochSessionHandler::class;
+    // public $sessionDriver = App\Libraries\Session\CocorochSessionHandler::class;
+    public $sessionDriver = CustomDatabaseHandler::class;
+
 
     /**
      * --------------------------------------------------------------------------
@@ -188,7 +191,8 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$savePath instead.
      */
-    public string $sessionSavePath = WRITEPATH . 'session';
+    // public string $sessionSavePath = WRITEPATH . 'session';
+    public string $sessionSavePath = 'ci_sessions';
 
     /**
      * --------------------------------------------------------------------------

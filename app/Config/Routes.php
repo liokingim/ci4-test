@@ -42,6 +42,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 });
 
 $routes->get('/', 'HomeController::index');
+$routes->get('session', 'SessionController::index');
+
 $routes->group('auth', function ($routes) {
     $routes->get('facebook', 'AuthController::facebook');
     $routes->get('facebook/callback', 'AuthController::facebookCallback');
