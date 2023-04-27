@@ -20,8 +20,11 @@ class CustomDatabaseHandler extends DatabaseHandler
 
         if ($row) {
             return $row->data;
+        } else {
+            $this->fail();
         }
 
-        return false;
+        // return false;
+        return parent::read($sessionID);
     }
 }
