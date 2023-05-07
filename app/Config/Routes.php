@@ -31,6 +31,9 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->get('api/search', 'JapaneseDocumentApiController::search');
+$routes->get('search', 'JapaneseDocumentController::search');
+
 $routes->get('posts', 'PostController::index');
 $routes->post('post', 'PostController::create');
 $routes->get('post/(:num)', 'PostController::show/$1');

@@ -60,3 +60,20 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - json (enabled by default - don't turn it off)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
+## trigram 기반 인덱스 일본어 텍스트
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+CREATE TABLE japanese_documents (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL
+);
+
+## Gin 인덱스
+CREATE INDEX japanese_documents_content_trgm_gin ON japanese_documents USING gin(content gin_trgm_ops);
+
+## GiST 인덱스
+CREATE INDEX japanese_documents_content_trgm_gist ON japanese_documents USING gist(content gist_trgm_ops);
+
+SELECT * FROM japanese_documents WHERE content LIKE '%現代%';
