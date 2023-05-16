@@ -77,3 +77,15 @@ CREATE INDEX japanese_documents_content_trgm_gin ON japanese_documents USING gin
 CREATE INDEX japanese_documents_content_trgm_gist ON japanese_documents USING gist(content gist_trgm_ops);
 
 SELECT * FROM japanese_documents WHERE content LIKE '%現代%';
+
+## CockroachDB
+CREATE TABLE ci_sessions (
+    id VARCHAR PRIMARY KEY,
+    data BYTEA,
+    last_activity TIMESTAMP
+);
+
+DELETE FROM ci_sessions WHERE now() - INTERVAL '1 hour' > last_activity;
+
+ ## Task Runner
+php spark tasks:run
