@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -29,5 +29,22 @@ class YourController extends Controller
         {
             echo "Input is valid.";
         }
+
+        $session = session();
+        $session->set('key', 'value');  // 세션 설정
+        $sessionId = $session->session_id();
+
+        $data = [
+            'session_id' => $sessionId,
+            'user_id' => $userId,  // 사용자 ID
+        ];
+
+        $db->table('user_session')->insert($data);
+
+        $query = $db->table('user_session')->getWhere(['session_id' => $sessionId]);
+
+        $userSession = $query->getRow();
+
+        $db->table('users')->set('last_login', date('Y-m-d H:i:s'))->where('id', $userSession->user_id)->update();
     }
 }
