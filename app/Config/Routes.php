@@ -57,6 +57,9 @@ $routes->group('auth', function ($routes) {
     $routes->get('google/sns', 'SNSAuthController::authenticateWithGoogle');
 });
 
+$routes->post('/bank/deposit', 'BankController::deposit');
+$routes->post('/bank/withdraw', 'BankController::withdraw');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
