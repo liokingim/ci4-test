@@ -140,17 +140,90 @@ Expected Result: 예상 결과: 반환 값이 예상한 값과 일치합니다.
 
 ## Test 테이블
 
-Controller
-Test Case ID	Description	                            Input	                    Expected Output	                                              Method	Path
-C1	            BankController의 get 요청 테스트	    없음	                        성공적인 HTTP 응답 (200 OK)	                                GET	/bank
-C2	            BankController의 post 요청 테스트	    bank_code, branch_number	    성공적인 HTTP 응답 (200 OK)	                                POST	/bank
-C3	            BankController의 validation 실패 테스트	bank_code 또는 branch_number    누락 또는 형식 불일치	HTTP 응답 오류 (400 Bad Request)	    POST	/bank
-C4	            BankController의 response 값 테스트	    bank_code, branch_number	    기대하는 응답 값	                                        GET or POST	/bank
-C5	            BankController의 DB 값 변경 테스트	    bank_code, branch_number	    DB 값의 변경 확인	                                        GET or POST	/bank
+<!-- Controller Test Cases -->
+<h1>Controller Test Cases</h1>
+<table border="1">
+  <tr>
+    <th>Test Case ID</th>
+    <th>Description</th>
+    <th>Input</th>
+    <th>Expected Output</th>
+    <th>Method</th>
+    <th>Path</th>
+  </tr>
+  <tr>
+    <td>C1</td>
+    <td>BankController의 get 요청 테스트</td>
+    <td>bank_code, branch_number</td>
+    <td>성공적인 HTTP 응답 (200 OK)</td>
+    <td>GET</td>
+    <td>/bank</td>
+  </tr>
+    <tr>
+    <td>C2</td>
+    <td>BankController의 post 요청 테스트</td>
+    <td>없음</td>
+    <td>성공적인 HTTP 응답 (200 OK)</td>
+    <td>POST</td>
+    <td>/bank</td>
+  </tr>
+    <tr>
+    <td>C3</td>
+    <td>BankController의 validation 실패 테스트</td>
+    <td>bank_code 또는 branch_number</td>
+    <td>누락 또는 형식 불일치	HTTP 응답 오류 (400 Bad Request)	</td>
+    <td>GET or POST</td>
+    <td>/bank</td>
+  </tr>
+    <tr>
+    <td>C4</td>
+    <td>BankController의 response 값 테스트</td>
+    <td>bank_code, branch_number</td>
+    <td>기대하는 응답 값</td>
+    <td>GET or POST</td>
+    <td>/bank</td>
+  </tr>
+    <tr>
+    <td>C5</td>
+    <td>BankController의 DB 값 변경 테스트</td>
+    <td>bank_code, branch_number</td>
+    <td>DB 값의 변경 확인</td>
+    <td>GET or POST</td>
+    <td>/bank</td>
+  </tr>
+</table>
 
-Services
-Test Case ID	Description	                            Input	            Expected Output
-S1	            BankService의 deposit 메소드 테스트	    bank_id, amount	        DB의 변화, boolean 값 리턴
-S2	            BankService의 withdraw 메소드 테스트	bank_id, amount	        DB의 변화, boolean 값 리턴
-S3	            BankService의 validation 실패 테스트	잘못된 bank_id, amount	예외 발생
-S4	            BankService의 모델 호출 확인	        bank_id, amount	        모델 메소드 호출 확인
+<!-- Services Test Cases -->
+<h1>Services Test Cases</h1>
+<table border="1">
+  <tr>
+    <th>Test Case ID</th>
+    <th>Description</th>
+    <th>Input</th>
+    <th>Expected Output</th>
+  </tr>
+  <tr>
+    <td>S1</td>
+    <td>BankService의 deposit 메소드 테스트</td>
+    <td>bank_id, amount</td>
+    <td>DB의 변화, boolean 값 리턴</td>
+  </tr>
+  <tr>
+    <td>S2</td>
+    <td>BankService의 withdraw 메소드 테스트</td>
+    <td>bank_id, amount</td>
+    <td>DB의 변화, boolean 값 리턴</td>
+  </tr>
+  <tr>
+    <td>S3</td>
+    <td>BankService의 validation 실패 테스트</td>
+    <td>잘못된 bank_id, amount</td>
+    <td>예외 발생</td>
+  </tr>
+  <tr>
+    <td>S4</td>
+    <td>BankService의 모델 호출 확인</td>
+    <td>bank_id, amount</td>
+    <td>모델 메소드 호출 확인</td>
+  </tr>
+</table>
