@@ -18,6 +18,9 @@ class ValidationController extends Controller
         $this->request = \Config\Services::request();
     }
 
+    /**
+     *
+     */
     public function index()
     {
         $age = $this->request->getGet('age');
