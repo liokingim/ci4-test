@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Services\BankService;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\HTTP\IncomingRequest;
+use CodeIgniter\HTTP\Request;
 
 class BankController extends BaseController
 {
@@ -25,35 +25,35 @@ class BankController extends BaseController
     //     // ...
     // }
 
-    public function deposit(IncomingRequest $request): ResponseInterface
+    public function deposit(Request $request): ResponseInterface
     {
-        $validation =  \Config\Services::validation();
+        // $validation =  \Config\Services::validation();
 
-        $validation->setRules([
-            'bank_code' => 'required|numeric|exact_length[4]',
-            'branch_number' => 'permit_empty|numeric|exact_length[3]',
-        ]);
+        // $validation->setRules([
+        //     'bank_code' => 'required|numeric|exact_length[4]',
+        //     'branch_number' => 'permit_empty|numeric|exact_length[3]',
+        // ]);
 
-        if (!$validation->withRequest($request)->run()) {
-            return $this->failValidationErrors($validation->getErrors());
-        }
+        // if (!$validation->withRequest($request)->run()) {
+        //     return $this->failValidationErrors($validation->getErrors());
+        // }
 
-        $amount = $request->getPost('amount');
-        $bankCode = $request->getPost('bank_code');
-        $branchNumber = $request->getPost('branch_number');
+        // $amount = $request->getGet('amount');
+        // $bankCode = $request->getGet('bank_code');
+        // $branchNumber = $request->getGet('branch_number');
 
-        $this->bankService->deposit($amount, $bankCode, $branchNumber);
+        // $this->bankService->deposit($amount, $bankCode, $branchNumber);
 
-        // ...
+        return view('welcome_message');
     }
 
-    public function withdraw(IncomingRequest $request): ResponseInterface
+    public function withdraw(Request $request): ResponseInterface
     {
-        $amount = $request->getPost('amount');
+        $amount = $request->getGet('amount');
 
         // Here, we are calling the withdraw method in the service.
         $this->bankService->withdraw($amount);
 
-        // ...
+        return view('welcome_message');
     }
 }
