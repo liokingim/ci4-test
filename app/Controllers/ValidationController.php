@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Services\ValidationService;
@@ -13,7 +14,8 @@ class ValidationController extends Controller
     protected $request;
     private $service;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->service = new ValidationService();
         $this->request = \Config\Services::request();
     }
@@ -23,19 +25,23 @@ class ValidationController extends Controller
      */
     public function index()
     {
-        $age = $this->request->getGet('age');
+        $age = "";
 
-        if ($age === null) {
-            return $this->fail("Age parameter is required", 400);
+        if (isset($this->request->getPost()['json']['age'])) {
+            $age = $this->request->getPost()['json']['age'];
+        }
+
+        if (!$age or $age === null) {
+            return $this->respond("Age parameter is required", 400);
         }
 
         try {
             $this->service->validateAge($age);
         } catch (\InvalidArgumentException $e) {
-            return $this->fail($e->getMessage(), 400);
+            return $this->respond('Age must be a positive integer', 400);
         }
 
-        return $this->respond("Valid age: {$age}");
+        return $this->respond("Valid age: {$age}", 200);
     }
 
     public function setService($service)

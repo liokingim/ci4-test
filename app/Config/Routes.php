@@ -59,7 +59,7 @@ $routes->group('auth', function ($routes) {
 
 $routes->get('/bank/deposit', 'BankController::deposit');
 $routes->get('/bank/withdraw', 'BankController::withdraw');
-$routes->get('/validate', 'ValidationController::index');
+$routes->post('/validate', 'ValidationController::index');
 
 /*
  * --------------------------------------------------------------------
