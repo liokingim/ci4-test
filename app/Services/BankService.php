@@ -13,6 +13,11 @@ class BankService
         $this->model = $model;
     }
 
+    public function index()
+    {
+        return false;
+    }
+
     public function deposit()
     {
         return false;

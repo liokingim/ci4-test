@@ -25,6 +25,13 @@ class BankController extends BaseController
     //     // ...
     // }
 
+    public function index()
+    {
+        $this->bankService->index();
+
+        return view('welcome_message');
+    }
+
     public function deposit(Request $request): ResponseInterface
     {
         // $validation =  \Config\Services::validation();

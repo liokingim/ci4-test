@@ -40,7 +40,7 @@ $routes->get('post/(:num)', 'PostController::show/$1');
 $routes->post('post/(:num)', 'PostController::update/$1');
 $routes->delete('post/(:num)', 'PostController::delete/$1');
 
-$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes) {
     $routes->get('example', 'ExampleApiController::index');
 });
 
@@ -57,6 +57,7 @@ $routes->group('auth', function ($routes) {
     $routes->get('google/sns', 'SNSAuthController::authenticateWithGoogle');
 });
 
+$routes->get('/get_bank_info', 'BankController::index');
 $routes->get('/bank/deposit', 'BankController::deposit');
 $routes->get('/bank/withdraw', 'BankController::withdraw');
 $routes->post('/validate', 'ValidationController::index');
