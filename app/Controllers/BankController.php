@@ -3,16 +3,21 @@
 namespace App\Controllers;
 
 use App\Services\BankService;
+use CodeIgniter\Config\Services;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\Request;
+use CodeIgniter\RESTful\ResourceController;
 
-class BankController extends BaseController
+class BankController extends ResourceController
 {
     protected $bankService;
+    protected $request;
 
     public function __construct()
     {
         $this->bankService = new BankService();
+        $this->request = Services::request();
     }
 
     // public function deposit(IncomingRequest $request): ResponseInterface
@@ -32,7 +37,7 @@ class BankController extends BaseController
         return view('welcome_message');
     }
 
-    public function deposit(Request $request): ResponseInterface
+    public function deposit(Request $request)
     {
         // $validation =  \Config\Services::validation();
 
@@ -54,7 +59,7 @@ class BankController extends BaseController
         return view('welcome_message');
     }
 
-    public function withdraw(Request $request): ResponseInterface
+    public function withdraw(IncomingRequest $request)
     {
         $amount = $request->getGet('amount');
 
@@ -62,5 +67,55 @@ class BankController extends BaseController
         $this->bankService->withdraw($amount);
 
         return view('welcome_message');
+    }
+
+    public function setBankService($mockService)
+    {
+        $this->bankService = $mockService;
+    }
+
+    public function balance()
+    {
+        // $request = Services::request();
+
+        $req = $this->request->getGet();
+        // log_message('error', var_export($req, true));
+
+        // Here, we are calling the withdraw method in the service.
+        $result = $this->bankService->balance2($req['accountId']);
+
+        // log_message('error', "result => " . var_export($result, true));
+
+        return $this->respond($result, ResponseInterface::HTTP_OK);
+    }
+
+    public function accountInfo()
+    {
+        $req = $this->request->getGet();
+        // log_message('error', "accountInfo => " . var_export($req, true));
+
+        $data = $this->bankService->getAccountInfo($req['accountId']);
+
+        return $this->respond($data);
+    }
+
+    public function transactionHistory()
+    {
+        $req = $this->request->getGet();
+        // log_message('error', "transactionHistory => " . var_export($req, true));
+
+        $data = $this->bankService->getTransactionHistory($req['accountId']);
+
+        return $this->respond($data);
+    }
+
+    public function loanDetails()
+    {
+        $req = $this->request->getGet();
+        // log_message('error', "loanDetails => " . var_export($req, true));
+
+        $data = $this->bankService->getLoanDetails($req['accountId']);
+
+        return $this->respond($data);
     }
 }

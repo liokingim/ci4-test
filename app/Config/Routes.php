@@ -58,8 +58,16 @@ $routes->group('auth', function ($routes) {
 });
 
 $routes->get('/get_bank_info', 'BankController::index');
+
 $routes->get('/bank/deposit', 'BankController::deposit');
 $routes->get('/bank/withdraw', 'BankController::withdraw');
+
+$routes->get('/bank/balance', 'BankController::balance');
+
+$routes->get('bank/account', 'BankController::accountInfo');
+$routes->get('bank/transactions', 'BankController::transactionHistory');
+$routes->get('bank/loan', 'BankController::loanDetails');
+
 $routes->post('/validate', 'ValidationController::index');
 
 /*

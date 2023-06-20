@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\SampleModel3;
@@ -7,7 +8,7 @@ use App\Models\SampleModel4;
 /**
  * 트랜젝션 소스 모델 2개에서 한개의 모델에서 디비 컨넥션을 가져와서 처리
  */
-class SampleService2
+class SampleService3
 {
     protected $sampleModel3;
     protected $sampleModel4;
