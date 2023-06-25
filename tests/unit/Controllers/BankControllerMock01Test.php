@@ -36,10 +36,15 @@ class BankControllerMock01Test extends CIUnitTestCase
         // Create a mock request object with a mocked `getGet()` method.
         $mockRequest = $this->getMockBuilder('CodeIgniter\HTTP\CURLRequest')
             ->disableOriginalConstructor()
+            ->setMethods(['request'])
             ->getMock();
         $mockRequest->expects($this->once())
             ->method('get')
             ->will($this->returnValue(array('accountId' => '123456')));
+        $mockRequest->method('request')
+            ->willReturn('your expected value');
+
+        Services::injectMock('curlrequest', $mockRequest);
 
         $mockRequest = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor() // disable constructor for mocking
