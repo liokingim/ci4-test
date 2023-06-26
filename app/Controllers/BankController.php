@@ -81,7 +81,6 @@ class BankController extends ResourceController
         $req = $this->request->getGet();
         // log_message('error', var_export($req, true));
 
-        // Here, we are calling the withdraw method in the service.
         $result = $this->bankService->balance2($req['accountId']);
 
         // log_message('error', "result => " . var_export($result, true));
