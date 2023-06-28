@@ -76,10 +76,66 @@ class BankService
             throw new \Exception("Error while fetching API: loan " . $response3->getReason());
         }
 
+        $accounts = json_decode($response1->getBody(), true);
+        $transactions = json_decode($response2->getBody(), true);
+        $loan = json_decode($response3->getBody(), true);
+
+        // 첫 번째 API 응답 처리
+        if (
+            json_last_error() === JSON_ERROR_NONE
+        ) {
+            if (
+                (is_array($accounts) || $accounts instanceof Countable)
+                && $accounts && count($accounts) > 0
+            ) {
+                foreach ($accounts as $item) {
+                    // 각 항목에 대한 처리
+                }
+            } else {
+                echo "Error: No valid data received from the first API.";
+            }
+        } else {
+            echo "Error: Failed to decode JSON from the first API.";
+        }
+
+        // 두 번째 API 응답 처리
+        if (
+            json_last_error() === JSON_ERROR_NONE
+        ) {
+            if ((is_array($transactions) || $transactions instanceof Countable)
+                && $transactions && count($transactions) > 0
+            ) {
+                foreach ($transactions as $item) {
+                    // 각 항목에 대한 처리
+                }
+            } else {
+                echo "Error: No valid data received from the second API.";
+            }
+        } else {
+            echo "Error: Failed to decode JSON from the second API.";
+        }
+
+        // 3 번째 API 응답 처리
+        if (
+            json_last_error() === JSON_ERROR_NONE
+        ) {
+            if ((is_array($loan) || $loan instanceof Countable)
+                && $loan && count($loan) > 0
+            ) {
+                foreach ($loan as $item) {
+                    // 각 항목에 대한 처리
+                }
+            } else {
+                echo "Error: No valid data received from the second API.";
+            }
+        } else {
+            echo "Error: Failed to decode JSON from the second API.";
+        }
+
         return [
-            'account' => json_decode($response1->getBody(), true),
-            'transactions' => json_decode($response2->getBody(), true),
-            'loan' => json_decode($response3->getBody(), true),
+            'account' => $accounts,
+            'transactions' => $transactions,
+            'loan' => $loan,
         ];
     }
 
