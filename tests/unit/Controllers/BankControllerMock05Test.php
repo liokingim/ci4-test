@@ -3,27 +3,20 @@
 namespace Tests\Unit;
 
 use CodeIgniter\Test\CIUnitTestCase;
-use App\Controllers\BankController;
-use App\Services\BankService;
-use App\Services\Resource\RequestResource;
-use App\Services\Resource\ResponseResource;
-use CodeIgniter\HTTP\CURLRequest;
-use CodeIgniter\HTTP\Request;
-use Config\Services;
-use CodeIgniter\HTTP\ResponseInterface;
-// use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
+use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 
-class BankControllerMock02Test extends CIUnitTestCase
+class BankControllerMock05Test extends CIUnitTestCase
 {
-    // use DatabaseTestTrait;
     use FeatureTestTrait;
 
     private $curlrequest;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
+
         $this->curlrequest = $this->getMockBuilder('CodeIgniter\HTTP\CURLRequest')
             ->disableOriginalConstructor()
             ->setMethods(['request'])
@@ -32,21 +25,8 @@ class BankControllerMock02Test extends CIUnitTestCase
         Services::injectMock('curlrequest', $this->curlrequest);
     }
 
-
-    // $mock = $this->getMockBuilder(SomeClass::class)
-    //              ->setMethods(['someMethod'])
-    //              ->getMock();
-
-    // $mock->expects($this->exactly(3))
-    //      ->method('someMethod')
-    //      ->withConsecutive(
-    //          ['first', 'call'],  // The expected arguments for the first call
-    //          ['second', 'call'], // The expected arguments for the second call
-    //          ['third', 'call']   // The expected arguments for the third call
-    //      );
-    public function testBalance2()
+    public function testBalance()
     {
-        $accountId = '123456';
         $expected = [
             'account' => [
                 "accountNumber" => "123456789",
@@ -79,7 +59,7 @@ class BankControllerMock02Test extends CIUnitTestCase
                 "loanAmount" => 10000,
                 "currency" => "USD",
                 "loanDurationInMonths" => 12,
-                "interestRate" => 5,
+                "interestRate" => 7,
                 "monthlyPayment" => 856.07
             ],
         ];
@@ -98,17 +78,10 @@ class BankControllerMock02Test extends CIUnitTestCase
                 $this->createMockResponse(ResponseInterface::HTTP_OK, $expected['loan'])
             );
 
-        $requestResource = new RequestResource();
-        $responseResource = new ResponseResource();
+        $response = $this->call('get', '/bank/balance', ['accountId' => '123456']);
 
-        // Create an instance of BankService
-        $bankService = new BankService($requestResource, $responseResource);
-
-        $bankService->balance($accountId);
-        $result = $responseResource->getBody();
-
-        // Verify the results
-        $this->assertSame($expected, $result);
+        $this->assertEquals(200, $response->response()->getStatusCode());
+        $this->assertEquals($expected, json_decode($response->response()->getBody(), true));
     }
 
     private function createMockResponse(int $status, array $body)

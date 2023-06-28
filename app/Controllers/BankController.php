@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Services\BankService;
+use App\Services\Resource\RequestResource;
+use App\Services\Resource\ResponseResource;
 use CodeIgniter\Config\Services;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -13,10 +15,18 @@ class BankController extends ResourceController
 {
     protected $bankService;
     protected $request;
+    protected $requestResource;
+    protected $responseResource;
 
     public function __construct()
     {
-        $this->bankService = new BankService();
+        $this->requestResource = new RequestResource();
+        $this->responseResource = new ResponseResource();
+
+        $this->bankService = new BankService(
+            $this->requestResource,
+            $this->responseResource
+        );
         $this->request = Services::request();
     }
 
@@ -79,9 +89,11 @@ class BankController extends ResourceController
         // $request = Services::request();
 
         $req = $this->request->getGet();
-        // log_message('error', var_export($req, true));
 
-        $result = $this->bankService->balance($req['accountId']);
+        // $result = $this->bankService->balance($req['accountId']);
+        $this->bankService->balance($req['accountId']);
+
+        $result = $this->responseResource->getBody();
 
         // log_message('error', "result => " . var_export($result, true));
 

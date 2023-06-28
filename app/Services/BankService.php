@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\BankModel;
+use App\Services\Resource\RequestResource;
+use App\Services\Resource\ResponseResource;
 use CodeIgniter\HTTP\CURLRequest;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -10,11 +12,17 @@ use CodeIgniter\HTTP\ResponseInterface;
 class BankService
 {
     protected $model;
-
     protected $request;
+    protected $requestResource;
+    protected $responseResource;
 
-    public function __construct()
-    {
+    public function __construct(
+        RequestResource $requestResource,
+        ResponseResource $responseResource
+    ) {
+        $this->requestResource = $requestResource;
+        $this->responseResource = $responseResource;
+
         $this->request = service('curlrequest');
     }
 
@@ -43,7 +51,7 @@ class BankService
         return $res1 . $res2 . $res3 . $res4;
     }
 
-    public function balance(string $accountId): array
+    public function balance(string $accountId)
     {
         //
         $response1 = $this->request->get('http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
@@ -125,11 +133,17 @@ class BankService
             echo "Error: Failed to decode JSON from the second API.";
         }
 
-        return [
+        $this->responseResource->setBody([
             'account' => $accounts,
             'transactions' => $transactions,
             'loan' => $loan,
-        ];
+        ]);
+
+        // return [
+        //     'account' => $accounts,
+        //     'transactions' => $transactions,
+        //     'loan' => $loan,
+        // ];
     }
 
 
