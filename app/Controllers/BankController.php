@@ -81,7 +81,7 @@ class BankController extends ResourceController
         $req = $this->request->getGet();
         // log_message('error', var_export($req, true));
 
-        $result = $this->bankService->balance2($req['accountId']);
+        $result = $this->bankService->balance($req['accountId']);
 
         // log_message('error', "result => " . var_export($result, true));
 

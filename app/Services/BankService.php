@@ -43,14 +43,7 @@ class BankService
         return $res1 . $res2 . $res3 . $res4;
     }
 
-    private function balance($res1, $res2, $res3, $res4)
-    {
-        return $res1 . $res2 . $res3 . $res4;
-    }
-
-
-
-    public function balance2(string $accountId): array
+    public function balance(string $accountId): array
     {
         //
         $response1 = $this->request->get('http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
