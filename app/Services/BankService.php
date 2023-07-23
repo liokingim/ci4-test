@@ -13,6 +13,7 @@ class BankService
 {
     protected $model;
     protected $request;
+    protected $client;
     protected $requestResource;
     protected $responseResource;
 
@@ -23,7 +24,9 @@ class BankService
         $this->requestResource = $requestResource;
         $this->responseResource = $responseResource;
 
-        $this->request = service('curlrequest');
+        // $this->request = service('curlrequest');
+        $this->client = \Config\Services::curlrequest();
+        $this->client->setHeader('Content-Type', 'application/json');
     }
 
     public function setModel(BankModel $model)
@@ -54,7 +57,7 @@ class BankService
     public function balance(string $accountId)
     {
         //
-        $response1 = $this->request->get('http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
+        $response1 = $this->client->get('http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
 
         if ($response1->getStatusCode() !== ResponseInterface::HTTP_OK) {
             // Handle error
@@ -62,7 +65,7 @@ class BankService
         }
 
         //
-        $response2 = $this->request->get('http://localhost/ci4-test/public/bank/transactions?accountId=' . $accountId);
+        $response2 = $this->client->get('http://localhost/ci4-test/public/bank/transactions?accountId=' . $accountId);
 
         if ($response2->getStatusCode() !== ResponseInterface::HTTP_OK) {
             // Handle error
@@ -70,23 +73,24 @@ class BankService
         }
 
         //
-        $response3 = $this->request->get('http://localhost/ci4-test/public/bank/loan?accountId=' . $accountId);
+        $response3 = $this->client
+            ->request('post', 'http://localhost/ci4-test/public/bank/loan', ['json' => ['accountId' => $accountId]]);
 
         if ($response3->getStatusCode() !== ResponseInterface::HTTP_OK) {
             // Handle error
             throw new \Exception("Error while fetching API: loan " . $response3->getReason());
         }
 
-        $accounts = json_decode($response1->getBody(), true);
-        $transactions = json_decode($response2->getBody(), true);
-        $loan = json_decode($response3->getBody(), true);
+        $accounts = json_decode($response1->getJSON(), true);
+        $transactions = json_decode($response2->getJSON(), true);
+        $loan = json_decode($response3->getJSON(), true);
 
         // 첫 번째 API 응답 처리
         if (
             json_last_error() === JSON_ERROR_NONE
         ) {
             if (
-                (is_array($accounts) || $accounts instanceof Countable)
+                (is_array($accounts) || $accounts instanceof \Countable)
                 && $accounts && count($accounts) > 0
             ) {
                 foreach ($accounts as $item) {
@@ -96,14 +100,14 @@ class BankService
                 echo "Error: No valid data received from the first API.";
             }
         } else {
-            echo "Error: Failed to decode JSON from the first API.";
+            echo "Error: Failed to decode JSON from the first API1.";
         }
 
         // 두 번째 API 응답 처리
         if (
             json_last_error() === JSON_ERROR_NONE
         ) {
-            if ((is_array($transactions) || $transactions instanceof Countable)
+            if ((is_array($transactions) || $transactions instanceof \Countable)
                 && $transactions && count($transactions) > 0
             ) {
                 foreach ($transactions as $item) {
@@ -113,14 +117,14 @@ class BankService
                 echo "Error: No valid data received from the second API.";
             }
         } else {
-            echo "Error: Failed to decode JSON from the second API.";
+            echo "Error: Failed to decode JSON from the second API2.";
         }
 
         // 3 번째 API 응답 처리
         if (
             json_last_error() === JSON_ERROR_NONE
         ) {
-            if ((is_array($loan) || $loan instanceof Countable)
+            if ((is_array($loan) || $loan instanceof \Countable)
                 && $loan && count($loan) > 0
             ) {
                 foreach ($loan as $item) {
@@ -130,7 +134,7 @@ class BankService
                 echo "Error: No valid data received from the second API.";
             }
         } else {
-            echo "Error: Failed to decode JSON from the second API.";
+            echo "Error: Failed to decode JSON from the second API3.";
         }
 
         $this->responseResource->setBody([

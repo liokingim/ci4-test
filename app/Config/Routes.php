@@ -66,7 +66,7 @@ $routes->get('/bank/balance', 'BankController::balance');
 
 $routes->get('bank/account', 'BankController::accountInfo');
 $routes->get('bank/transactions', 'BankController::transactionHistory');
-$routes->get('bank/loan', 'BankController::loanDetails');
+$routes->post('bank/loan', 'BankController::loan');
 
 $routes->post('/validate', 'ValidationController::index');
 

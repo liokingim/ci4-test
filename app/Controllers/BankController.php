@@ -14,7 +14,7 @@ use CodeIgniter\RESTful\ResourceController;
 class BankController extends ResourceController
 {
     protected $bankService;
-    protected $request;
+    // protected $request;
     protected $requestResource;
     protected $responseResource;
 
@@ -27,7 +27,7 @@ class BankController extends ResourceController
             $this->requestResource,
             $this->responseResource
         );
-        $this->request = Services::request();
+        // $this->request = Services::request();
     }
 
     // public function deposit(IncomingRequest $request): ResponseInterface
@@ -120,12 +120,15 @@ class BankController extends ResourceController
         return $this->respond($data);
     }
 
-    public function loanDetails()
+    public function loan()
     {
-        $req = $this->request->getGet();
-        // log_message('error', "loanDetails => " . var_export($req, true));
+        $req = get_object_vars($this->request->getJSON());
+        // log_message('error', "loanDetails request => " . var_export($this->request, true));
+        log_message('error', "loanDetails => " . var_export($req, true));
 
         $data = $this->bankService->getLoanDetails($req['accountId']);
+
+        // var_dump($data);
 
         return $this->respond($data);
     }
