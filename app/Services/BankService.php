@@ -57,12 +57,15 @@ class BankService
     public function balance(string $accountId)
     {
         //
-        $response1 = $this->client->get('http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
+        // $response1 = $this->client->get('http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
+        $response1 = $this->client->request("get", 'http://localhost/ci4-test/public/bank/account?accountId=' . $accountId);
 
         if ($response1->getStatusCode() !== ResponseInterface::HTTP_OK) {
             // Handle error
             throw new \Exception("Error while fetching API: account " . $response1->getReason());
         }
+
+
 
         //
         $response2 = $this->client->get('http://localhost/ci4-test/public/bank/transactions?accountId=' . $accountId);

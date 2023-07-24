@@ -24,12 +24,6 @@ class BankControllerMock02Test extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->curlrequest = $this->getMockBuilder('CodeIgniter\HTTP\CURLRequest')
-            ->disableOriginalConstructor()
-            ->setMethods(['request'])
-            ->getMock();
-
-        Services::injectMock('curlrequest', $this->curlrequest);
     }
 
 
@@ -114,6 +108,13 @@ class BankControllerMock02Test extends CIUnitTestCase
 
     public function testBalance3()
     {
+        $this->curlrequest = $this->getMockBuilder('CodeIgniter\HTTP\CURLRequest')
+            ->disableOriginalConstructor()
+            ->setMethods(['request'])
+            ->getMock();
+
+        Services::injectMock('curlrequest', $this->curlrequest);
+
         $accountId = '123456';
         $expected = [
             'account' => [
@@ -171,10 +172,89 @@ class BankControllerMock02Test extends CIUnitTestCase
         ]);
         $resultArray = json_decode($result->getJSON(), true);
 
-        var_dump($result->getJSON());
-
         // Verify the results
         $this->assertSame($expected, $resultArray);
+    }
+
+    public function testBalance4()
+    {
+
+
+        $accountId = '123456';
+        $expected = [
+            'account' => [
+                "accountNumber" => "123456789",
+                "accountHolderName" => "John Doe",
+                "accountType" => "Savings",
+                "balance" => 5000,
+                "currency" => "USD"
+            ],
+            'transactions' => [
+                "accountNumber" => "123456789",
+                "transactions" => [
+                    [
+                        "transactionId" => "T1",
+                        "type" => "DEBIT",
+                        "amount" => 100,
+                        "currency" => "USD",
+                        "timestamp" => "2023-05-17T10:00:00Z"
+                    ],
+                    [
+                        "transactionId" => "T2",
+                        "type" => "CREDIT",
+                        "amount" => 200,
+                        "currency" => "USD",
+                        "timestamp" => "2023-05-17T11:00:00Z"
+                    ]
+                ]
+            ],
+            'loan' => [
+                "loanId" => "L122",
+                "loanAmount" => 10000,
+                "currency" => "USD",
+                "loanDurationInMonths" => 12,
+                "interestRate" => 5,
+                "monthlyPayment" => 856.07
+            ],
+        ];
+
+        // Mock 객체를 생성합니다.
+        $mockCurlRequest = $this->getMockBuilder('CodeIgniter\HTTP\CURLRequest')
+            ->disableOriginalConstructor()
+            ->setMethods(['request'])
+            ->getMock();
+
+        // Mock 객체의 메서드를 설정합니다.
+        $mockCurlRequest->expects($this->exactly(3))
+            ->method('request')
+            ->withConsecutive(
+                [$this->equalTo('get')],
+                [$this->equalTo('get')],
+                [$this->equalTo('post')]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->createMockResponse2(ResponseInterface::HTTP_OK, $expected['account']),
+                $this->createMockResponse2(ResponseInterface::HTTP_OK, $expected['transactions']),
+                $this->createMockResponse2(ResponseInterface::HTTP_OK, $expected['loan'])
+            );
+
+        // 이제 Mock 객체를 서비스 컨테이너에 주입합니다.
+        Services::injectMock('curlrequest', $mockCurlRequest);
+
+        // 이후에 \Config\Services::curlrequest()를 호출하면 앞에서 생성한 Mock 객체가 반환됩니다.
+        // $this->client = \Config\Services::curlrequest();
+
+
+        $result = $this->call('get', '/bank/balance', [
+            'accountId'  => '12345'
+        ]);
+        $resultArray = json_decode($result->getJSON(), true);
+
+        // Verify the results
+        $this->assertSame(
+            $expected,
+            $resultArray
+        );
     }
 
     private function createMockResponse(int $status, array $body)
